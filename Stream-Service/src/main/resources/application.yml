@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: STREAM-SERVICE
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/Stream-Service
+    username: root
+    password: root
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+
+
+files:
+  video: videos/
+
