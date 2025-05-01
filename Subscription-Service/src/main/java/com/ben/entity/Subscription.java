@@ -1,9 +1,8 @@
 package com.ben.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.ben.enums.PaymentOrderStatus;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,9 +18,17 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userId;
+
     private String planType;
-    private Double price;
+    private Long price;
+
+    private String paymentLinkId;
+
+    @Column(nullable = false)
+    private Long userId;
+
+    PaymentOrderStatus paymentOrderStatus = PaymentOrderStatus.PENDING;
+
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 }

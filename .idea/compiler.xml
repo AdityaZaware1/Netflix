@@ -2,7 +2,24 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Annotation profile for Stream-Service" enabled="true">
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Eureka-Server" />
+        <module name="Api-Gateway" />
+      </profile>
+      <profile name="Annotation profile for History-Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="History-Service" />
+      </profile>
+      <profile name="Annotation profile for User-Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -11,14 +28,23 @@
         </processorPath>
         <module name="Subscription-Service" />
         <module name="Stream-Service" />
-        <module name="Content-Service" />
         <module name="User-Service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Api Gateway" target="21" />
+      <module name="Content-Service" target="21" />
+      <module name="Security-Service" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Api Gateway" options="-parameters" />
+      <module name="Api-Gateway" options="-parameters" />
       <module name="Content-Service" options="-parameters" />
+      <module name="Eureka-Server" options="-parameters" />
+      <module name="History-Service" options="-parameters" />
+      <module name="Security-Service" options="-parameters" />
       <module name="Stream-Service" options="-parameters" />
       <module name="Subscription-Service" options="-parameters" />
       <module name="User-Service" options="-parameters" />

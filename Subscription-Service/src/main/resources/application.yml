@@ -18,3 +18,11 @@ razorpay:
   api:
     key: rzp_test_COl2jK69K1rzy2
     secret: 2yRakSKsYqXIxR2DB77e00Zs
+
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://eureka:8761/eureka

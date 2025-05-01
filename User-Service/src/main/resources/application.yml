@@ -3,9 +3,16 @@ spring:
     name: USER-SERVICE
 
   datasource:
-    url: jdbc:mysql://mysql:3306/user_service
+    url: jdbc:mysql://mysql:3306/netflix
     username: root
     password: root
 
 server:
   port: 8081
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://eureka:8761/eureka

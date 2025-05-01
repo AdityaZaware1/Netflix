@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class PaymentResponse {
 
     private String paymentUrl;
+    private String getPaymentLinkId;
 }

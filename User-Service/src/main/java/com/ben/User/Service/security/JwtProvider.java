@@ -2,16 +2,20 @@ package com.ben.User.Service.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Service
 public class JwtProvider {
 
     public static SecretKey secretKey = Keys.hmacShaKeyFor(JwtConfiguration.SECRET_KEY.getBytes());
@@ -31,6 +35,15 @@ public class JwtProvider {
                 .signWith(secretKey)
                 .compact();
         return jwt;
+    }
+
+    public void validateToken(final String token) {
+        Jwts.parser().setSigningKey(getSignKey()).build().parseClaimsJws(token);
+    }
+
+    private Key getSignKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(JwtConfiguration.SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public static String getEmailFromToken(String token) {

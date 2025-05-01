@@ -1,6 +1,10 @@
 package com.ben.service.impl;
 
+import com.ben.dto.UserDto;
 import com.ben.entity.Video;
+import com.ben.enums.Role;
+import com.ben.external.UserService;
+import com.ben.kafka.KafkaProducer;
 import com.ben.repo.VideoRepo;
 import com.ben.service.VideoService;
 import jakarta.annotation.PostConstruct;
@@ -24,6 +28,8 @@ import java.util.Optional;
 public class VideoServiceImpl implements VideoService {
 
     private final VideoRepo videoRepo;
+    private final UserService userService;
+    private final KafkaProducer kafkaProducer;
 
     @Value("${files.video}")
     String DIR;
@@ -39,7 +45,13 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video save(Video video, MultipartFile file) {
+    public Video save(Video video, MultipartFile file, Long userId) {
+
+        UserDto userDto = userService.getUserById(userId);
+
+        if(userDto.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Unauthorized");
+        }
 
         try {
 
@@ -100,5 +112,16 @@ public class VideoServiceImpl implements VideoService {
     @Override
     public List<Video> getAll() {
         return videoRepo.findAll();
+    }
+
+    @Override
+    public Video getVideoById(Long id) {
+        Video video = videoRepo.findById(id).get();
+
+        if (video == null) {
+            throw new RuntimeException("Video not found");
+        }
+
+        return video;
     }
 }

@@ -1,6 +1,9 @@
 package com.ben.controller;
 
+import com.ben.dto.UserDto;
 import com.ben.entity.Video;
+import com.ben.external.UserService;
+import com.ben.kafka.KafkaProducer;
 import com.ben.response.Response;
 import com.ben.service.VideoService;
 import lombok.RequiredArgsConstructor;
@@ -26,19 +29,22 @@ import java.nio.file.Paths;
 public class VideoController {
 
     private final VideoService videoService;
+    private final UserService userService;
+    private final KafkaProducer kafkaProducer;
 
-    @PostMapping("/upload")
+    @PostMapping("/upload/{userId}")
     public ResponseEntity<?> create(
             @RequestParam("file") MultipartFile file,
             @RequestParam("title") String title,
-            @RequestParam("description") String description
+            @RequestParam("description") String description,
+            @PathVariable Long userId
     ) {
 
         Video video = new Video();
         video.setTitle(title);
         video.setDescription(description);
 
-        Video save = videoService.save(video, file);
+        Video save = videoService.save(video, file, userId);
 
         if (save != null) {
             return ResponseEntity
@@ -53,10 +59,13 @@ public class VideoController {
                          .build());
     }
 
-    @GetMapping("/stream/{id}")
+    @GetMapping("/stream/{videoID}/{userId}")
     public ResponseEntity<?> stream(
-            @PathVariable Long id) {
-        Video video = videoService.getVideo(id);
+            @PathVariable Long videoID,
+            @PathVariable Long userId) {
+        Video video = videoService.getVideo(videoID);
+
+        UserDto userDto = userService.getUserById(userId);
 
         String contentType = video.getContentType();
         String filePath = video.getFilePath();
@@ -67,6 +76,9 @@ public class VideoController {
             contentType = "application/octet-stream";
         }
 
+        String message = userId + "," + videoID;
+
+        kafkaProducer.send(userId, videoID);
 
         return ResponseEntity
                 .ok()
@@ -156,6 +168,11 @@ public class VideoController {
     @GetMapping("/title/{title}")
     public ResponseEntity<?> getByTitle(@PathVariable String title) {
         return ResponseEntity.ok(videoService.getVideoByTitle(title));
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Video> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(videoService.getVideo(id));
     }
 
 
