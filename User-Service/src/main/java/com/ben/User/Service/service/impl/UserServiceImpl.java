@@ -64,9 +64,4 @@ public class UserServiceImpl implements UserService {
         userRepo.delete(user);
     }
 
-    @Override
-    public User getUserProfileByJwt(String jwt) {
-        String email = JwtProvider.getEmailFromToken(jwt);
-        return getUser(email);
-    }
 }

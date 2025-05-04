@@ -1,108 +1,77 @@
 package com.ben.User.Service.controller;
 
+
 import com.ben.User.Service.entity.User;
-import com.ben.User.Service.repo.UserRepo;
-import com.ben.User.Service.response.AuthResponse;
-import com.ben.User.Service.security.CustomUserDetailsService;
+import com.ben.User.Service.request.JwtRequest;
+import com.ben.User.Service.response.JwtResponse;
 import com.ben.User.Service.security.JwtProvider;
-import com.ben.User.Service.service.impl.JwtService;
+import com.ben.User.Service.service.AuthService;
+import com.ben.User.Service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserRepo userRepo;
-    private final PasswordEncoder passwordEncoder;
-    private final CustomUserDetailsService customUserDetailsService;
-    private final JwtService jwtService;
-    private final JwtProvider jwtProvider;
+    private final UserDetailsService userDetailsService;
 
+    private final AuthenticationManager manager;
+    private final AuthService authService;
+    private final JwtProvider jwtHelper;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registerUser(@RequestBody User user) throws Exception {
+    public ResponseEntity<JwtResponse> register(@RequestBody JwtRequest request) {
 
-        User newUser = userRepo.findByEmail(user.getEmail());
+        User saveUser = authService.registerUser(request);
 
-        if (newUser != null) {
-            throw new Exception("User already exists");
-        }
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String token = this.jwtHelper.generateToken(userDetails);
 
-        newUser.setUsername(user.getUsername());
-        newUser.setEmail(user.getEmail());
-        String pass = passwordEncoder.encode(user.getPassword());
-        newUser.setPassword(pass);
-        newUser.setRole(user.getRole());
-
-        User savedUser = userRepo.save(newUser);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                savedUser.getEmail(), savedUser.getPassword()
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String token = JwtProvider.generateToken(authentication);
-
-        AuthResponse authResponse = new AuthResponse();
-
-        authResponse.setJwt(token);
-        authResponse.setStatus(true);
-        authResponse.setMessage("User registered successfully");
-
-        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+        JwtResponse response = JwtResponse.builder()
+                .jwt(token)
+                .username(userDetails.getUsername()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> signInUser(@RequestBody User user) throws Exception {
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
 
-        String email = user.getEmail();
-        String password = user.getPassword();
+        this.doAuthenticate(request.getEmail(), request.getPassword());
 
-        Authentication authentication = authenticate(email, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = JwtProvider.generateToken(authentication);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+        String token = this.jwtHelper.generateToken(userDetails);
 
-        User authUser = userRepo.findByEmail(email);
+        JwtResponse response = JwtResponse.builder()
+                .jwt(token)
+                .username(userDetails.getUsername()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-        AuthResponse authResponse = new AuthResponse();
+    private void doAuthenticate(String email, String password) {
 
-        authResponse.setJwt(jwt);
-        authResponse.setStatus(true);
-        authResponse.setMessage("User login successfully");
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
+        try {
+            manager.authenticate(authentication);
 
-        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException(" Invalid Username or Password  !!");
+        }
 
     }
 
-    @GetMapping("/validate")
-    public String validate(@RequestHeader("Authorization") String token) {
-        jwtProvider.validateToken(token);
-        return "Token is valid";
-    }
-
-    private Authentication authenticate(String email, String password) throws Exception {
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-
-        if(userDetails == null) {
-            throw new BadCredentialsException("Invalid username");
-        }
-
-        if(!password.equals(userDetails.getPassword())) {
-            throw new BadCredentialsException("Invalid password");
-        }
-
-        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+    @ExceptionHandler(BadCredentialsException.class)
+    public String exceptionHandler() {
+        return "Credentials Invalid !!";
     }
 }

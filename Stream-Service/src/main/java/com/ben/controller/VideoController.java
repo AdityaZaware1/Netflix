@@ -67,6 +67,10 @@ public class VideoController {
 
         UserDto userDto = userService.getUserById(userId);
 
+        if(userDto.getSubscribed() == false) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         String contentType = video.getContentType();
         String filePath = video.getFilePath();
 

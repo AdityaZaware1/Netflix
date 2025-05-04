@@ -24,8 +24,11 @@ public class HistoryServiceImpl implements HistoryService {
         Video video = videoService.getById(videoId);
 
         history.setUserId(userId);
-        history.setVideo(video);
-
+        history.setVideoId(video.getId());
+        history.setTitle(video.getTitle());
+        history.setDescription(video.getDescription());
+        history.setContentType(video.getContentType());
+        history.setFilePath(video.getFilePath());
 
         historyRepo.save(history);
     }

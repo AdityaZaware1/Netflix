@@ -6,16 +6,18 @@
       <list>
         <option value="$PROJECT_DIR$/User-Service/pom.xml" />
         <option value="$PROJECT_DIR$/Content-Service/pom.xml" />
-        <option value="$PROJECT_DIR$/Subscription-Service/pom.xml" />
         <option value="$PROJECT_DIR$/Stream-Service/pom.xml" />
         <option value="$PROJECT_DIR$/History-Service/pom.xml" />
         <option value="$PROJECT_DIR$/Eureka-Server/pom.xml" />
         <option value="$PROJECT_DIR$/Api-Gateway/pom.xml" />
         <option value="$PROJECT_DIR$/Security-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Subscription-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/api/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/Api-Gateway/pom.xml" />
         <option value="$PROJECT_DIR$/Security-Service/pom.xml" />
       </set>
     </option>

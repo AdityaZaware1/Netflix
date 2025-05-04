@@ -20,5 +20,9 @@ public class History {
     private Long id;
 
     private Long userId;
-    private Video video;
+    private Long videoId;
+    private String title;
+    private String description;
+    private String contentType;
+    private String filePath;;
 }

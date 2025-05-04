@@ -2,6 +2,7 @@ package com.ben.User.Service.service.impl;
 
 import com.ben.User.Service.entity.User;
 import com.ben.User.Service.repo.UserRepo;
+import com.ben.User.Service.request.JwtRequest;
 import com.ben.User.Service.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,15 +16,13 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepo userRepo;
 
     @Override
-    public User registerUser(User user) {
+    public User registerUser(JwtRequest jwtRequest) {
 
-        User newUser = userRepo.findByEmail(user.getEmail());
-
-        if (newUser != null) {
-            throw new RuntimeException("User already exists");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = new User();
+        user.setUsername(jwtRequest.getUserName());
+        user.setEmail(jwtRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(jwtRequest.getPassword()));
+        user.setRole(jwtRequest.getRole());
 
         return userRepo.save(user);
     }

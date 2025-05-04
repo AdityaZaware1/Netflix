@@ -13,9 +13,14 @@ public class UserController {
 
     private final UserService userService;
 
+//    @GetMapping("/profile")
+//    public ResponseEntity<User> findUserByEmail(@RequestHeader String jwt) {
+//        return ResponseEntity.ok(userService.getUserProfileByJwt(jwt));
+//    }
+
     @GetMapping("/profile")
-    public ResponseEntity<User> findUserByEmail(@RequestHeader String jwt) {
-        return ResponseEntity.ok(userService.getUserProfileByJwt(jwt));
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("hello");
     }
 
     @GetMapping("/{id}")

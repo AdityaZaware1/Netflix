@@ -1,0 +1,72 @@
+#spring:
+#  application:
+#    name: GATEWAY
+##  cloud:
+#    gateway:
+#      routes:
+#        - id: ADI
+#          uri: http://localhost:8081
+#          predicates:
+#            - Path=/adi/**
+#
+#        - id: BEN
+#          uri: http://localhost:8082
+#          predicates:
+#            - Path=/ben/**
+
+
+#spring:
+#  application:
+#    name: GATEWAY
+#  cloud:
+#    gateway:
+#        routes:
+#          - id: ADI
+#            uri: http://localhost:8081
+#            predicates:
+#              - Path=/adi/**
+#          - id: BEN
+#            uri: http://localhost:8082
+#            predicates:
+#              - Path=/ben/**
+
+
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+server:
+  port: 9090
+spring:
+  application:
+    name: GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: SUBSCRIPTION
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/subscription/**
+          filters:
+            - AuthenticationFilter
+
+        - id: USER
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AuthenticationFilter
+
+        - id: USER
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - AuthenticationFilter
+
+
