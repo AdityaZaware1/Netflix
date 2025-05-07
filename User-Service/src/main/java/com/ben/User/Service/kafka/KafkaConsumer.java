@@ -12,12 +12,16 @@ public class KafkaConsumer {
 
     private final UserService userService;
 
-    @KafkaListener(topics = "subscription_topic", groupId = "subscription-group")
+    @KafkaListener(topics = "payment-topic", groupId = "subscription-group")
     public void enableSubscription(String userId) {
 
         Long id = Long.parseLong(userId);
+
         User user = userService.getUserById(id);
         user.setSubscribed(true);
-        userService.upadeUser(user, id);
+        userService.updateUser(user);
+
     }
+
+
 }

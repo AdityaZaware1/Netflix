@@ -4,13 +4,16 @@ package com.ben.Subscription.Service.service;
 import com.ben.Subscription.Service.entity.Payment;
 import com.ben.Subscription.Service.reposnse.PaymentResponse;
 import com.ben.Subscription.Service.request.PaymentRequest;
+import com.razorpay.RazorpayException;
 
 public interface PaymentService {
 
 
-    public Payment cretePayment(PaymentRequest paymentRequest);
+    PaymentResponse cretePayment(PaymentRequest paymentRequest, Long id);
 
-    public PaymentResponse createRandomPayment(PaymentRequest paymentRequest);
+    PaymentResponse createRandomPayment(Payment paymentRequest);
 
-    public Payment getPaymentById(Long paymentId) throws Exception;
+    Payment getPaymentById(Long paymentId) throws Exception;
+
+    Boolean updatePaymentStatus(String paymentLinkId) throws RazorpayException;
 }

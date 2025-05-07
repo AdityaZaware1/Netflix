@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
 
-    public final String TOPIC = "subscription_topic";
+    public final String TOPIC = "history-topic";
 
-    public KafkaTemplate<String, String> kafkaTemplate;
+    public final KafkaTemplate<String, String> kafkaTemplate;
+
+    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public void send(Long userId, Long videoId) {
         String message = userId + "," + videoId;
-        kafkaTemplate.send(TOPIC, message);
+        kafkaTemplate.send("history-topic", message);
     }
 }

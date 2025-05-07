@@ -7,36 +7,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-//    @GetMapping("/profile")
-//    public ResponseEntity<User> findUserByEmail(@RequestHeader String jwt) {
-//        return ResponseEntity.ok(userService.getUserProfileByJwt(jwt));
-//    }
-
-    @GetMapping("/profile")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello");
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return ResponseEntity.ok(userService.upadeUser(user, id));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-
-        return ResponseEntity.ok().build();
+    @PutMapping("/update")
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.updateUser(user));
     }
 }

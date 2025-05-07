@@ -14,7 +14,7 @@ public class KafkaConsumer {
 
     private final HistoryService historyService;
 
-    @KafkaListener(topics = "subscription_topic", groupId = "history-group")
+    @KafkaListener(topics = "history-topic", groupId = "history-group")
     public void consume(String message) {
 
         Long userId = Long.parseLong(message.split(",")[0]);

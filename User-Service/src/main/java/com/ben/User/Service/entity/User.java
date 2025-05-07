@@ -9,18 +9,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class User {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
 
     private String username;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Email

@@ -15,14 +15,9 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 
     private Long id;
-
     private String username;
-
-    @Email
     private String email;
-
     private Boolean subscribed;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 }

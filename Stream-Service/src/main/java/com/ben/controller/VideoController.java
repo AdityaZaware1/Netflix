@@ -2,6 +2,7 @@ package com.ben.controller;
 
 import com.ben.dto.UserDto;
 import com.ben.entity.Video;
+import com.ben.enums.Role;
 import com.ben.external.UserService;
 import com.ben.kafka.KafkaProducer;
 import com.ben.response.Response;
@@ -67,27 +68,45 @@ public class VideoController {
 
         UserDto userDto = userService.getUserById(userId);
 
-        if(userDto.getSubscribed() == false) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if(userDto.getSubscribed() || userDto.getRole() == Role.ADMIN) {
+            String contentType = video.getContentType();
+            String filePath = video.getFilePath();
+
+            Resource resource = new FileSystemResource(filePath);
+
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            String message = userId + "," + videoID;
+
+            kafkaProducer.send(userId, videoID);
+
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
         }
 
-        String contentType = video.getContentType();
-        String filePath = video.getFilePath();
+//        String contentType = video.getContentType();
+//        String filePath = video.getFilePath();
+//
+//        Resource resource = new FileSystemResource(filePath);
+//
+//        if (contentType == null) {
+//            contentType = "application/octet-stream";
+//        }
+//
+//        String message = userId + "," + videoID;
+//
+ //        kafkaProducer.send(userId, videoID);
+//
+//        return ResponseEntity
+//                .ok()
+//                .contentType(MediaType.parseMediaType(contentType))
+//                .body(resource);
 
-        Resource resource = new FileSystemResource(filePath);
-
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        String message = userId + "," + videoID;
-
-        kafkaProducer.send(userId, videoID);
-
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .body(resource);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     // stream video in chunks
