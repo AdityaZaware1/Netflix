@@ -13,7 +13,7 @@ spring:
       ddl-auto: update
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
@@ -24,17 +24,17 @@ spring:
 
 user:
   service:
-    url: http://localhost:8082/api/users/
+    url: http://user:8082/api/users/
 
 files:
   video: videos/
 
-
-server:
-  port: 8084
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka:8761/eureka
+
+server:
+  port: 8084

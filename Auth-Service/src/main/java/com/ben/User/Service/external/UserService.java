@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "USER", url = "http://localhost:8082/api/users/")
+@FeignClient(name = "USER", url = "${user.service.url}")
 public interface UserService {
 
     @PostMapping("/create")

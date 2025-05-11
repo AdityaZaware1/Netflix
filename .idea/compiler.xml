@@ -11,17 +11,7 @@
         <module name="Config-Server" />
         <module name="api" />
       </profile>
-      <profile name="Annotation profile for Auth-Service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
-        </processorPath>
-        <module name="Stream-Service" />
-        <module name="Auth-Service" />
-      </profile>
-      <profile name="Annotation profile for Subscription-Service" enabled="true">
+      <profile name="Annotation profile for History-Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -31,6 +21,16 @@
         <module name="History-Service" />
         <module name="Subscription-Service" />
         <module name="User-Service" />
+      </profile>
+      <profile name="Annotation profile for Auth-Service" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
+        </processorPath>
+        <module name="Stream-Service" />
+        <module name="Auth-Service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
