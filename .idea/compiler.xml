@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Eureka-Server" />
+        <module name="Config-Server" />
         <module name="api" />
       </profile>
       <profile name="Annotation profile for Auth-Service" enabled="true">
@@ -20,7 +21,7 @@
         <module name="Stream-Service" />
         <module name="Auth-Service" />
       </profile>
-      <profile name="Annotation profile for User-Service" enabled="true">
+      <profile name="Annotation profile for Subscription-Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -44,6 +45,7 @@
       <module name="Api Gateway" options="-parameters" />
       <module name="Api-Gateway" options="-parameters" />
       <module name="Auth-Service" options="-parameters" />
+      <module name="Config-Server" options="-parameters" />
       <module name="Content-Service" options="-parameters" />
       <module name="Eureka-Server" options="-parameters" />
       <module name="History-Service" options="-parameters" />

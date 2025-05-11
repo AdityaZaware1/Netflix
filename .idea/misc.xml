@@ -14,6 +14,7 @@
         <option value="$PROJECT_DIR$/Subscription-Service/pom.xml" />
         <option value="$PROJECT_DIR$/api/pom.xml" />
         <option value="$PROJECT_DIR$/Auth-Service/pom.xml" />
+        <option value="$PROJECT_DIR$/Config-Server/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
