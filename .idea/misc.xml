@@ -15,11 +15,14 @@
         <option value="$PROJECT_DIR$/api/pom.xml" />
         <option value="$PROJECT_DIR$/Auth-Service/pom.xml" />
         <option value="$PROJECT_DIR$/Config-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/Server/pom.xml" />
+        <option value="$PROJECT_DIR$/apis/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/Api-Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Config-Server/pom.xml" />
         <option value="$PROJECT_DIR$/Security-Service/pom.xml" />
       </set>
     </option>

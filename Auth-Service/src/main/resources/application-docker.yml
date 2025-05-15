@@ -2,7 +2,7 @@ spring:
   application:
     name: AUTH
   datasource:
-    url: jdbc:mysql://localhost:3307/netflix
+    url: jdbc:mysql://mysql:3307/netflix
     username: user
     password: pass
 
@@ -13,7 +13,7 @@ spring:
 
 user:
   service:
-    url: http://user:8082/api/users/
+    url: http://userservice:8082/api/users/
 
 server:
   port: 8081
@@ -22,4 +22,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka:8761/eureka
+      defaultZone: http://host.docker.internal:8761/eureka/

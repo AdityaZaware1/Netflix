@@ -1,0 +1,50 @@
+
+
+server:
+  port: 9090
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://host.docker.internal:8761/eureka/
+spring:
+  application:
+    name: API
+  cloud:
+    gateway:
+      routes:
+        - id: SUBSCRIPTION
+          uri: http://subscription:8083
+          predicates:
+            - Path=/api/payment/**
+          filters:
+            - AuthenticationFilter
+
+        - id: AUTH
+          uri: http://authservice:8081
+          predicates:
+            - Path=/auth/**
+          filters:
+            - AuthenticationFilter
+
+        - id: USER
+          uri: http://userservice:8082
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - AuthenticationFilter
+
+        - id: STREAM-SERVICE
+          uri: http://streamservice:8084
+          predicates:
+            - Path=/api/video/**
+          filters:
+            - AuthenticationFilter
+
+        - id: HISTORY-SERVICE
+          uri: http://historyservice:8085
+          predicates:
+            - Path=/api/history/**
+          filters:
+            - AuthenticationFilter

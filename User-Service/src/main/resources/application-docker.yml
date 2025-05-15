@@ -3,7 +3,7 @@ spring:
   application:
     name: USER
   datasource:
-    url: jdbc:mysql://localhost:3307/netflix
+    url: jdbc:mysql://mysql:3307/netflix
     username: user
     password: pass
 

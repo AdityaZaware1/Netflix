@@ -1,6 +1,4 @@
 services:
-
-  
   mysql:
     image: mysql:latest
     container_name: mysql
@@ -44,7 +42,7 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
-    container_name: ms_kafka
+    container_name: kafka
     ports:
       - "9092:9092"
     depends_on:
@@ -55,10 +53,125 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
     networks:
       - netflix
 
+  eurekaserver:
+    image: adityazaware/eurekaserver:0.0.1
+    container_name: eurekaserver
+    ports:
+      - "8761:8761"
+    networks:
+      - netflix
+
+  apis:
+    image: adityazaware/apis:0.0.1
+    container_name: apis
+    ports:
+      - "9090:9090"
+    depends_on:
+      - eurekaserver
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
+
+    networks:
+      - netflix
+        
+  authservice:
+    image: adityazaware/authservice:0.0.1
+    container_name: authservice
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - eurekaserver
+      - apis
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/netflix
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
+    networks:
+      - netflix
+    
+  userserice:
+    image: adityazaware/userservice:0.0.1
+    container_name: userservice
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - eurekaserver
+      - apis
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/netflix
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
+    networks:
+      - netflix
+
+  subscription:
+    image: adityazaware/subscriptionservice:0.0.1
+    container_name: subscription
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - eurekaserver
+      - apis
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/netflix
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
+    networks:
+      - netflix
+  
+  streamservice:
+    image: adityazaware/streamservice:0.0.1
+    container_name: streamservice
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+      - eurekaserver
+      - apis
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/netflix
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
+    networks:
+      - netflix
+
+  historyservice:
+    image: adityazaware/historyservice:0.0.1
+    container_name: historyservice
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql
+      - eurekaserver
+      - apis
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/netflix
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
+    networks:
+      - netflix
 
 networks:
   netflix:
