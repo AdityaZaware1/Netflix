@@ -1,66 +1,65 @@
-# 🎬 Netflix Backend - Video Streaming Platform
+# 🎬 Netflix Clone Backend
 
-A robust backend system for a Netflix-like video streaming platform built with **Spring Boot microservices**, featuring content management, user subscriptions, video streaming, and intelligent recommendations using **OpenAI embeddings and pgvector**.
-
----
-
-## 📌 Features
-
-- ✅ **User Authentication & Authorization** (Keycloak)
-- ✅ **Video Upload & Streaming**
-- ✅ **Subscription Management**
-- ✅ **Content Recommendation System** (OpenAI + pgvector)
-- ✅ **Email-based Forgot Password with 2FA**
-- ✅ **Content Categorization & Metadata Management**
-- ✅ **Docker & Kubernetes Deployment**
-- ✅ **Kafka for Asynchronous Communication**
+A backend system for a Netflix-like video streaming platform built using **Spring Boot microservices** architecture.  
+This project incorporates **JWT-based authentication**, **Razorpay payment integration**, and **Apache Kafka** for event-driven communication.  
+All microservices are **containerized using Docker** and **orchestrated with Kubernetes** to ensure scalability, reliability, and easy deployment.
 
 ---
 
-## 🛠️ Tech Stack
+## 🧱 Microservices Overview
 
-- **Backend:** Spring Boot (Microservices)
-- **Database:** PostgreSQL with pgvector
-- **Security:** Keycloak, JWT, 2FA
-- **AI Recommendations:** OpenAI Embeddings API
-- **Async Messaging:** Apache Kafka
-- **Containerization:** Docker, Kubernetes
-- **Others:** Feign Clients, Spring Cloud Gateway, Lombok
-
----
-
-## 🧠 Recommendation System
-
-The Recommendation Service uses OpenAI’s embeddings API to generate vector representations of content metadata (title, genre, description). These vectors are stored in PostgreSQL using the `pgvector` extension and compared using cosine similarity to recommend similar shows/movies.
+| Service Name           | Description                                                         |
+|------------------------|---------------------------------------------------------------------|
+| **User Service**       | Manages user profiles, roles, and user data                         |
+| **Auth Service**       | Handles authentication, JWT token generation, and security          |
+| **Subscription Service** | Manages user subscriptions and payment processing via Razorpay    |
+| **Stream Service**     | Handles video streaming logic and content management                |
+| **History Service**    | Tracks user watch history and viewing preferences                   |
+| **API Gateway**        | Routes requests to the appropriate microservices                    |
+| **Server**             | Main backend orchestration or entry point for the platform          |
 
 ---
 
-## 🧪 Microservices Overview
+## ⚙️ Key Technologies
 
-| Service | Description |
-|--------|-------------|
-| **User Service** | Handles user registration, login, roles |
-| **Video Service** | Uploads, streams, and categorizes videos |
-| **Subscription Service** | Manages plans, payments, and access |
-| **Recommendation Service** | Suggests similar content using embeddings |
-| **Email Service** | Sends OTPs and password reset links |
-| **Gateway Service** | API gateway for routing & authentication |
-| **Kafka Event Bus** | Connects services asynchronously |
+- **Spring Boot** – Framework for building microservices
+- **JWT** – JSON Web Tokens for secure authentication and authorization
+- **Razorpay** – Payment gateway for subscription handling
+- **Apache Kafka** – Event-driven communication between services
+- **Docker** – Containerization of all microservices
+- **Kubernetes** – Container orchestration and deployment management
+- **MySQL** – Persistent relational database storage
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Features
+
+- Secure and scalable user authentication with JWT
+- Subscription management with seamless Razorpay payment integration
+- Reliable event-driven architecture with Kafka for decoupled service communication
+- Video streaming management supporting personalized user experience
+- Watch history tracking for content recommendations and progress
+- Fully containerized microservices for easy deployment and scaling using Docker and Kubernetes
+
+---
+
+## 🛠️ Getting Started
 
 ### Prerequisites
 
-- Docker & Docker Compose
 - Java 17+
-- PostgreSQL with `pgvector` extension
-- OpenAI API Key
+- Maven or Gradle
+- Docker
+- Kubernetes cluster (Minikube, Docker Desktop, or cloud-managed Kubernetes)
+- Kafka cluster (can be run locally using Docker)
+- Razorpay account and API keys
 
-### Run Locally
+---
+
+### Clone the Repository and start the container
 
 ```bash
 git clone https://github.com/yourusername/netflix-backend.git
 cd netflix-backend
-docker-compose up --build
+docker compose build -t
+

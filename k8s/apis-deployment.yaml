@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apis
+  template:
+    metadata:
+      labels:
+        app: apis
+    spec:
+      containers:
+        - name: apis
+          image: adityazaware/apis:0.0.1
+          ports:
+            - containerPort: 9090
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eurekaserver:8761/eureka/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apis
+spec:
+  selector:
+    app: apis
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
+  type: ClusterIP
