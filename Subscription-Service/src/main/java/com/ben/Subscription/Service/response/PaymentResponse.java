@@ -1,4 +1,4 @@
-package com.ben.Subscription.Service.reposnse;
+package com.ben.Subscription.Service.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

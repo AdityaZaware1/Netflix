@@ -53,7 +53,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
     networks:
       - netflix
@@ -79,7 +79,7 @@ services:
 
     networks:
       - netflix
-        
+
   authservice:
     image: adityazaware/authservice:0.0.1
     container_name: authservice
@@ -97,7 +97,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
     networks:
       - netflix
-    
+
   userserice:
     image: adityazaware/userservice:0.0.1
     container_name: userservice
@@ -118,7 +118,7 @@ services:
       - netflix
 
   subscription:
-    image: adityazaware/subscriptionservice:0.0.1
+    image: adityazaware/subscription:0.0.1
     container_name: subscription
     ports:
       - "8083:8083"
@@ -135,7 +135,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://host.docker.internal:8761/eureka/
     networks:
       - netflix
-  
+
   streamservice:
     image: adityazaware/streamservice:0.0.1
     container_name: streamservice

@@ -13,7 +13,7 @@ spring:
 
 user:
   service:
-    url: http://localhost:8082/api/users/
+    url: http://localhost:8082/api/users
 
 server:
   port: 8081

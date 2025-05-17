@@ -2,8 +2,8 @@ package com.ben.Subscription.Service.service;
 
 
 import com.ben.Subscription.Service.entity.Payment;
-import com.ben.Subscription.Service.reposnse.PaymentResponse;
 import com.ben.Subscription.Service.request.PaymentRequest;
+import com.ben.Subscription.Service.response.PaymentResponse;
 import com.razorpay.RazorpayException;
 
 public interface PaymentService {

@@ -2,8 +2,8 @@ package com.ben.Subscription.Service.controller;
 
 
 import com.ben.Subscription.Service.entity.Payment;
-import com.ben.Subscription.Service.reposnse.PaymentResponse;
 import com.ben.Subscription.Service.request.PaymentRequest;
+import com.ben.Subscription.Service.response.PaymentResponse;
 import com.ben.Subscription.Service.service.PaymentService;
 import com.razorpay.RazorpayException;
 import lombok.RequiredArgsConstructor;
